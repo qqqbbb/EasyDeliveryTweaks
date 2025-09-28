@@ -7,14 +7,13 @@ using UnityEngine;
 
 namespace EasyDeliveryTweaks
 {
-    internal class Patches
+    internal class FixLowResRender
     {
         static RenderTexture newRT;
         static RenderTexture defaultRT;
         static RenderTexture newRearVeiwRT;
         static RenderTexture defaultRearVeiwRT;
         static bool usingNewRenderTexture;
-        static RotationRounding truckRR;
         static MeshRenderer screenMR;
         static MeshRenderer rearVeiwMR;
         static Camera mainCamera;
@@ -28,6 +27,9 @@ namespace EasyDeliveryTweaks
             {
                 if (newRT == null)
                     CreateNewRenderTexture(__instance.cam);
+
+                //Main.logger.LogMessage(" targetFrameRate " + Application.targetFrameRate);
+                //Main.logger.LogMessage(" vSyncCount " + QualitySettings.vSyncCount);
             }
 
             static IEnumerator FixResolutionNextFrame(Camera cam)
@@ -145,20 +147,14 @@ namespace EasyDeliveryTweaks
         [HarmonyPatch(typeof(sCarController))]
         public class sCarControllerPatch
         {
-            [HarmonyPostfix, HarmonyPatch("Update")]
-            static void UpdatePostfix(sCarController __instance)
+            [HarmonyPostfix, HarmonyPatch("Awake")]
+            static void AwakePostfix(sCarController __instance)
             {
                 if (rearVeiwMR == null)
                 {
                     Transform t = __instance.transform.Find("carInt/RearViewMirror");
                     if (t != null)
                         rearVeiwMR = t.GetComponent<MeshRenderer>();
-                }
-                if (truckRR == null)
-                {
-                    Transform t = __instance.transform.Find("Model");
-                    if (t != null)
-                        truckRR = t.GetComponent<RotationRounding>();
                 }
                 if (rearVeiwCamera == null)
                 {
@@ -168,26 +164,10 @@ namespace EasyDeliveryTweaks
 
                     CreateNewRearViewRenderTexture(rearVeiwCamera);
                 }
-                FixTruckTurning();
             }
 
-            private static void FixTruckTurning()
-            {
-                if (truckRR == null)
-                    return;
 
-                if (Config.fixTruckTurn.Value && truckRR.isActiveAndEnabled)
-                {
-                    truckRR.enabled = false;
-                }
-                else if (Config.fixTruckTurn.Value == false && truckRR.isActiveAndEnabled == false)
-                {
-                    truckRR.enabled = true;
-                }
-            }
         }
-
-
 
 
     }
