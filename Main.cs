@@ -13,10 +13,11 @@ namespace EasyDeliveryTweaks
     {
         public const string PLUGIN_GUID = "qqqbbb.EasyDelivery.tweaks";
         public const string PLUGIN_NAME = "Tweaks";
-        public const string PLUGIN_VERSION = "1.1.0";
+        public const string PLUGIN_VERSION = "1.2.0";
 
         public static ConfigFile config;
         public static ManualLogSource logger;
+        public static sHUD hud;
 
 
         private void Awake()
@@ -30,5 +31,16 @@ namespace EasyDeliveryTweaks
             //Logger.LogInfo("SceneName " + SceneManager.GetActiveScene().name);
         }
 
+
+        [HarmonyPatch(typeof(sHUD))]
+        public class sHUDPatch
+        {
+            [HarmonyPostfix, HarmonyPatch("Start")]
+            static void StartPostfix(sHUD __instance)
+            {
+                hud = __instance;
+            }
+
+        }
     }
 }

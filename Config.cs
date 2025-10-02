@@ -17,11 +17,23 @@ namespace EasyDeliveryTweaks
         {
             fixLowResRender = Main.config.Bind("", "Render the world in resolution set in options", false);
             fixTruckTurn = Main.config.Bind("", "Smooth truck turning", false);
-            vertSync = Main.config.Bind("", "Screen vertical syncronization", true);
-            vertSync.SettingChanged += vertSyncChanged;
+            vertSync = Main.config.Bind("", "Screen vertical synchronization", true);
+            vertSync.SettingChanged += VertSyncChanged;
+            fixLowResRender.SettingChanged += FixLowResRenderChanged;
+            fixTruckTurn.SettingChanged += FixTruckTurnChanged;
         }
 
-        private static void vertSyncChanged(object sender, EventArgs e)
+        private static void FixLowResRenderChanged(object sender, EventArgs e)
+        {
+            LowResRenderFix.FixLowResRender();
+        }
+
+        private static void FixTruckTurnChanged(object sender, EventArgs e)
+        {
+            TruckTurnFix.FixTruckTurning();
+        }
+
+        private static void VertSyncChanged(object sender, EventArgs e)
         {
             if (vertSync.Value)
                 QualitySettings.vSyncCount = 1;
