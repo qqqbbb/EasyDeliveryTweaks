@@ -64,6 +64,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Config.cs" />
+    <Compile Include="EnergyModifier.cs" />
+    <Compile Include="PlayerTemperatureModifier.cs" />
     <Compile Include="TruckTurnFix.cs" />
     <Compile Include="Main.cs" />
     <Compile Include="LowResRenderFix.cs" />
