@@ -13,7 +13,7 @@ namespace EasyDeliveryTweaks
     {
         public const string PLUGIN_GUID = "qqqbbb.EasyDelivery.tweaks";
         public const string PLUGIN_NAME = "Tweaks";
-        public const string PLUGIN_VERSION = "1.2.1";
+        public const string PLUGIN_VERSION = "1.3.0";
 
         public static ConfigFile config;
         public static ManualLogSource logger;
